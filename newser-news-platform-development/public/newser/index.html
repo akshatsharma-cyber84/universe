@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#0a0a0c">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="description" content="NEWSer — Know what matters. In seconds. A fast, trustworthy, personalized information platform by AK Industries.">
+  <title>NEWSer — Know what matters. In seconds.</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <!-- ====== SPLASH ====== -->
+  <div id="splash">
+    <div class="splash-glow"></div>
+    <div class="splash-logo">NEWSer</div>
+    <p class="splash-tagline">Know what matters. In seconds.</p>
+    <p class="splash-company">Made by AK Industries</p>
+  </div>
+
+  <!-- ====== LOGIN ====== -->
+  <div id="login-screen" class="screen">
+    <div class="login-container">
+      <div class="login-logo">NEWSer</div>
+      <h1 class="login-title">Welcome to NEWSer</h1>
+      <p class="login-subtitle">Your world. One intelligent feed.</p>
+      <div class="login-form">
+        <div class="form-group">
+          <label for="login-name">Your Name</label>
+          <input type="text" id="login-name" class="input-field" placeholder="Enter your name" autocomplete="name" required>
+        </div>
+        <div class="form-group">
+          <label for="login-phone">Mobile Number</label>
+          <div class="phone-input-wrap">
+            <span class="phone-prefix">+91</span>
+            <input type="tel" id="login-phone" placeholder="Mobile number" inputmode="numeric" pattern="[0-9]*" maxlength="10" autocomplete="tel">
+          </div>
+        </div>
+        <p id="login-error" class="login-error"></p>
+        <button id="login-btn" class="btn-primary" onclick="App.handleLoginSubmit()">Continue</button>
+      </div>
+      <p class="login-footer">Made by AK Industries</p>
+    </div>
+  </div>
+
+  <!-- ====== OTP ====== -->
+  <div id="otp-screen" class="screen">
+    <div class="otp-container">
+      <h1 class="otp-title">Verify your number</h1>
+      <p class="otp-subtitle">We sent a code to <span id="otp-phone-display" class="otp-phone"></span></p>
+      <div class="otp-inputs">
+        <input type="tel" class="otp-input" maxlength="1" inputmode="numeric" pattern="[0-9]*" aria-label="OTP digit 1">
+        <input type="tel" class="otp-input" maxlength="1" inputmode="numeric" pattern="[0-9]*" aria-label="OTP digit 2">
+        <input type="tel" class="otp-input" maxlength="1" inputmode="numeric" pattern="[0-9]*" aria-label="OTP digit 3">
+        <input type="tel" class="otp-input" maxlength="1" inputmode="numeric" pattern="[0-9]*" aria-label="OTP digit 4">
+      </div>
+      <p id="otp-error" class="otp-error"></p>
+      <div class="resend-section">
+        <p id="resend-timer"></p>
+        <button id="resend-btn" onclick="App.handleResendOTP()">Resend OTP</button>
+      </div>
+      <button id="verify-btn" class="btn-primary" style="margin-top:24px;" onclick="App.handleOTPVerify()">Verify</button>
+    </div>
+  </div>
+
+  <!-- ====== ONBOARDING ====== -->
+  <div id="onboarding-screen" class="screen">
+    <div class="onboard-container">
+      <h1 class="onboard-title">What do you want to know about?</h1>
+      <p class="onboard-subtitle">Select your interests to personalize your feed</p>
+      <div class="interest-grid">
+        <button class="interest-chip" data-interest="AI" onclick="this.classList.toggle('selected')">🤖 AI</button>
+        <button class="interest-chip" data-interest="Technology" onclick="this.classList.toggle('selected')">💻 Technology</button>
+        <button class="interest-chip" data-interest="Science" onclick="this.classList.toggle('selected')">🔬 Science</button>
+        <button class="interest-chip" data-interest="Business" onclick="this.classList.toggle('selected')">📈 Business</button>
+        <button class="interest-chip" data-interest="Startups" onclick="this.classList.toggle('selected')">🚀 Startups</button>
+        <button class="interest-chip" data-interest="World" onclick="this.classList.toggle('selected')">🌍 World</button>
+        <button class="interest-chip" data-interest="India" onclick="this.classList.toggle('selected')">🇮🇳 India</button>
+        <button class="interest-chip" data-interest="Sports" onclick="this.classList.toggle('selected')">⚽ Sports</button>
+        <button class="interest-chip" data-interest="Gaming" onclick="this.classList.toggle('selected')">🎮 Gaming</button>
+        <button class="interest-chip" data-interest="Entertainment" onclick="this.classList.toggle('selected')">🎬 Entertainment</button>
+        <button class="interest-chip" data-interest="Space" onclick="this.classList.toggle('selected')">🛸 Space</button>
+        <button class="interest-chip" data-interest="Education" onclick="this.classList.toggle('selected')">📚 Education</button>
+        <button class="interest-chip" data-interest="Finance" onclick="this.classList.toggle('selected')">💰 Finance</button>
+      </div>
+      <p id="onboard-error"></p>
+      <button class="btn-build-feed" onclick="App.handleBuildFeed()">Build My Feed</button>
+    </div>
+  </div>
+
+  <!-- ====== MAIN APP ====== -->
+  <div id="main-app" class="screen">
+
+    <!-- Top Header -->
+    <header class="app-header">
+      <span class="header-logo">NEWSer</span>
+      <div class="header-actions">
+        <button class="header-btn" onclick="App.navigateTo('search')" aria-label="Search" title="Search">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        </button>
+        <button class="header-btn" onclick="App.navigateTo('notifications')" aria-label="Notifications" title="Notifications">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg>
+          <span class="notif-badge">0</span>
+        </button>
+        <button class="ak-header-btn" onclick="window.open('https://akshatsharma-cyber84.github.io/AK_world/','_blank','noopener,noreferrer')" aria-label="AK Industries" title="AK Industries">AK</button>
+      </div>
+    </header>
+
+    <!-- Desktop Sidebar -->
+    <aside class="desktop-sidebar" style="display:none;">
+      <div class="sidebar-nav">
+        <button class="sidebar-item active" data-view="home" onclick="App.navigateTo('home')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
+          Home
+        </button>
+        <button class="sidebar-item" data-view="discover" onclick="App.navigateTo('discover')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+          Discover
+        </button>
+        <button class="sidebar-item" data-view="trending" onclick="App.navigateTo('trending')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+          Trending
+        </button>
+        <button class="sidebar-item" data-view="saved" onclick="App.navigateTo('saved')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg>
+          Saved
+        </button>
+        <button class="sidebar-item" data-view="create" onclick="App.navigateTo('create')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Create
+        </button>
+
+        <div class="sidebar-divider"></div>
+        <div class="sidebar-section-title">Topics</div>
+        <button class="sidebar-item" onclick="App.switchCategory('AI'); App.navigateTo('home');">🤖 AI</button>
+        <button class="sidebar-item" onclick="App.switchCategory('Tech'); App.navigateTo('home');">💻 Technology</button>
+        <button class="sidebar-item" onclick="App.switchCategory('Science'); App.navigateTo('home');">🔬 Science</button>
+        <button class="sidebar-item" onclick="App.switchCategory('Business'); App.navigateTo('home');">📈 Business</button>
+        <button class="sidebar-item" onclick="App.switchCategory('World'); App.navigateTo('home');">🌍 World</button>
+        <button class="sidebar-item" onclick="App.switchCategory('India'); App.navigateTo('home');">🇮🇳 India</button>
+        <button class="sidebar-item" onclick="App.switchCategory('Sports'); App.navigateTo('home');">⚽ Sports</button>
+        <button class="sidebar-item" onclick="App.switchCategory('Space'); App.navigateTo('home');">🛸 Space</button>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      <!-- Category Tabs (Mobile) -->
+      <div class="category-tabs-wrap">
+        <div class="category-tabs" id="category-tabs"></div>
+      </div>
+
+      <!-- View: Home -->
+      <div id="view-home" class="view-panel active">
+        <div id="feed-container"></div>
+      </div>
+
+      <!-- View: Discover -->
+      <div id="view-discover" class="view-panel"></div>
+
+      <!-- View: Create -->
+      <div id="view-create" class="view-panel"></div>
+
+      <!-- View: Saved -->
+      <div id="view-saved" class="view-panel"></div>
+
+      <!-- View: Profile -->
+      <div id="view-profile" class="view-panel"></div>
+
+      <!-- View: Trending -->
+      <div id="view-trending" class="view-panel"></div>
+
+      <!-- View: Notifications -->
+      <div id="view-notifications" class="view-panel"></div>
+
+      <!-- View: Search -->
+      <div id="view-search" class="view-panel"></div>
+    </main>
+
+    <!-- Desktop Right Panel -->
+    <aside class="desktop-right" id="desktop-right" style="display:none;"></aside>
+
+    <!-- Bottom Nav (Mobile) -->
+    <nav class="bottom-nav" aria-label="Main navigation">
+      <button class="nav-item active" data-view="home" onclick="App.navigateTo('home')" aria-label="Home">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
+        <span class="nav-label">Home</span>
+      </button>
+      <button class="nav-item" data-view="discover" onclick="App.navigateTo('discover')" aria-label="Discover">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+        <span class="nav-label">Discover</span>
+      </button>
+      <button class="nav-item" data-view="create" onclick="App.navigateTo('create')" aria-label="Create">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+        <span class="nav-label">Create</span>
+      </button>
+      <button class="nav-item" data-view="saved" onclick="App.navigateTo('saved')" aria-label="Saved">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg>
+        <span class="nav-label">Saved</span>
+      </button>
+      <button class="nav-item" data-view="profile" onclick="App.navigateTo('profile')" aria-label="Profile">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <span class="nav-label">Profile</span>
+      </button>
+    </nav>
+  </div>
+
+  <!-- ====== MODALS ====== -->
+  <div id="story-modal"></div>
+  <div id="explain-modal"></div>
+  <div id="sources-modal"></div>
+  <div id="report-modal"></div>
+  <div id="edit-modal"></div>
+  <div id="creator-modal"></div>
+  <div id="dashboard-modal"></div>
+  <div id="about-modal"></div>
+
+  <!-- ====== TOAST ====== -->
+  <div id="toast"></div>
+
+  <!-- ====== SCRIPTS ====== -->
+  <script src="assets/js/storage.js"></script>
+  <script src="assets/js/news.js"></script>
+  <script src="assets/js/creators.js"></script>
+  <script src="assets/js/promotions.js"></script>
+  <script src="assets/js/verification.js"></script>
+  <script src="assets/js/notifications.js"></script>
+  <script src="assets/js/profile.js"></script>
+  <script src="assets/js/auth-provider.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script src="assets/js/feed.js"></script>
+  <script src="assets/js/app.js"></script>
+
+  <!-- Desktop right panel population -->
+  <script>
+    // Populate desktop right panel with trending content
+    document.addEventListener('DOMContentLoaded', () => {
+      const rightPanel = document.getElementById('desktop-right');
+      if (!rightPanel) return;
+
+      const trending = NewsData.filter(s => s.important).slice(0, 5);
+      const topCreators = [...CreatorsData].sort((a, b) => b.followers - a.followers).slice(0, 5);
+      const catColors = {
+        'AI': '#818cf8', 'Technology': '#06b6d4', 'Science': '#a855f7', 'Business': '#22c55e',
+        'Sports': '#f97316', 'Gaming': '#ec4899', 'World': '#3b82f6', 'India': '#f59e0b',
+        'Education': '#eab308', 'Space': '#8b5cf6', 'Finance': '#10b981', 'Startups': '#f43f5e',
+        'Entertainment': '#d946ef'
+      };
+
+      let html = `<div class="right-panel-section"><h3>🔥 Trending</h3>`;
+      trending.forEach(s => {
+        html += `<div class="right-trend-item" onclick="App.openStory('${s.id}')">
+          <span style="color:${catColors[s.category] || '#888'}">${s.category}</span>
+          <p>${s.headline}</p>
+          <div class="rt-time">${s.time}</div>
+        </div>`;
+      });
+      html += `</div>`;
+
+      html += `<div class="right-panel-section"><h3>✍️ Top Creators</h3>`;
+      topCreators.forEach(c => {
+        html += `<div class="right-creator-item" onclick="App.showCreatorProfile('${c.id}')">
+          <span>${c.avatar}</span>
+          <div class="rci-info"><strong>${c.name}</strong>${c.verified ? ' 🔵' : ''}<span>${c.username}</span></div>
+        </div>`;
+      });
+      html += `</div>`;
+
+      html += `<div class="right-panel-section" style="margin-top:24px;">
+        <div class="pv-ak" onclick="window.open('https://akshatsharma-cyber84.github.io/AK_world/','_blank','noopener,noreferrer')">
+          <div class="ak-icon-wrap"><span class="ak-icon">AK</span></div>
+          <div><strong>AK Industries</strong><p style="color:var(--text3);font-size:0.78rem;">Visit AK World →</p></div>
+        </div>
+      </div>`;
+
+      rightPanel.innerHTML = html;
+    });
+  </script>
+
+</body>
+</html>
